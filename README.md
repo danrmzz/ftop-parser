@@ -11,7 +11,7 @@ The SaiCoPvP F-Top Parser automates the process of collecting leaderboard data f
 - **Image Upload**: Staff members can upload a screenshot of the F-Top leaderboard.
 - **Automated Text Recognition (OCR)**: The tool uses **Tesseract.js** to automatically recognize and extract text from the uploaded image.
 - **Data Cleanup**: The extracted text is automatically cleaned and formatted, removing unnecessary characters and organizing the data into a readable format.
-- **Error Handling**: If no text is detected in the uploaded image, the tool will notify the user.
+- **Error Handling**: If no valid data is detected in the uploaded image, the tool will notify the user.
 - **Copy and Paste**: After parsing, staff members can easily copy the extracted data to transfer it into spreadsheets, Discord, or any other platform.
 
 ## Live Demo
