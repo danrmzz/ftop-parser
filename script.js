@@ -14,9 +14,32 @@ imgInput.addEventListener("change", (event) => {
             const img = new Image(); // create a new image object
             img.src = e.target.result; // set the source to the uploaded image
 
+            // When the image loads, process it
+            img.onload = function () {
+                // Create a canvas element to preprocess the image
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
 
-            // Use Tesseract.js to perform OCR on the uploaded image
-            Tesseract.recognize(img.src)
+                // Set canvas size to the image size
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Draw the image on the canvas
+                ctx.drawImage(img, 0, 0);
+
+                // Convert the image to grayscale
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    data[i] = avg;      // Red channel
+                    data[i + 1] = avg;  // Green channel          
+                    data[i + 2] = avg;  // Blue channel
+                }
+                ctx.putImageData(imageData, 0, 0); // put the grayscale data back
+
+                // Now pass the preprocessed image to Tesseract for OCR
+                Tesseract.recognize(canvas.toDataURL())
                 .then(function(result) {
                     // Display the extracted text in the output section
                     output.textContent = result.text;
@@ -26,6 +49,7 @@ imgInput.addEventListener("change", (event) => {
                     output.textContent = "Error processing image";
                     console.error(error);
                 });
+            };
         };
 
         // Read the image file
