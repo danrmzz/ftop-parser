@@ -2,6 +2,18 @@
 const imgInput = document.getElementById("img-input");
 const output = document.getElementById("output");
 
+// Function to clean up and extract relevant leaderboard entries
+function cleanExtractedText(text) {
+    // Regular expression to match the leaderboard pattern (#Rank FactionName - Value)
+    const leaderboardPattern = /#\d+\s+[a-zA-Z]+[\w\s]*\s*-\s*\$[\d,]+/g;
+
+    // Match all the leaderboard entries based on the pattern
+    const matches = text.match(leaderboardPattern);
+
+    // If we have matches, return the cleaned up text, otherwise return a message
+    return matches ? matches.join("\n") : "No leaderboard data found.";
+}
+
 // Listen for changes (when the user uploads an image)
 imgInput.addEventListener("change", (event) => {
     const file = event.target.files[0]; // get the uploaded file
@@ -41,6 +53,9 @@ imgInput.addEventListener("change", (event) => {
                 // Now pass the preprocessed image to Tesseract for OCR
                 Tesseract.recognize(canvas.toDataURL())
                 .then(function(result) {
+                    // Clean and extract only the leaderboard data
+                    const cleanedText = cleanExtractedText(result.text);
+                    
                     // Display the extracted text in the output section
                     output.textContent = result.text;
                 })
