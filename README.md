@@ -16,7 +16,7 @@ The SaiCoPvP F-Top Parser automates the process of collecting leaderboard data f
 
 ## Live Demo
 
-You can use the F-Top Parser tool directly by visiting the following URL:
+You can use the F-Top Parser tool directly by clicking the link below:
 
 [Click here to use the SaiCoPvP F-Top Parser](https://ftop-parser.vercel.app/)
 
