@@ -6,19 +6,23 @@
     <title>F-Top Parser</title>
     <!-- Add Tesseract.js from a CDN -->
     <script src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>SaiCo F-Top Parser</h1>
+    <div class="container">
+        <p class="title"><a href="https://saicopvp.com"><span class="saicopvp"><span class="saico">SaiCo</span><span class="pvp">PvP</span></span></a> F-Top Parser</p>
 
-    <!-- Section for uploading the image -->
-     <div id="upload">
-        <label for="img-input">Upload your screenshot: </label>
-        <input type="file" id="img-input" accept="image/*">
-     </div>
+        <!-- Section for uploading the image -->
+        <div id="upload">
+            <input type="file" id="img-input" accept="image/*">
+            <label for="img-input" class="upload-btn">
+                <span class="up">Upload</span>
+            </label>
+        </div>
 
-    <!-- Section to display extracted text -->
-    <h2>Extracted F-Top Data:</h2>
-    <div id="output">Text will appear here after OCR</div>
+        <!-- Section to display extracted text -->
+        <div id="output" class="hidden"><img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/YouTube_loading_symbol_3_%28transparent%29.gif" class="loading"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>

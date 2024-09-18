@@ -1,0 +1,86 @@
+@import url('https://fonts.cdnfonts.com/css/pixelcraft-2');
+
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, #381c58, #370e6d);
+    color: white;
+    text-align: center;
+    font-family: PixelCraft;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    
+}
+
+#upload {
+    position: relative;
+    display: inline-block;
+}
+
+input[type="file"] {
+    display: none; /* Hide the default file input */
+}
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #00000046;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.1s ease;
+    font-size: 16px;
+    width: 100px;
+
+
+}
+
+.up {
+    transform: translateY(-4px);
+}
+
+.upload-btn:hover {
+    background-color: #0000005b;
+}
+
+
+#output {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+
+.saico {
+    color: rgb(155, 17, 247);
+}
+
+.pvp {
+    color: rgb(0, 214, 0);
+}
+
+
+.loading {
+ width: 25px;
+ height: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+a {
+    text-decoration: none; /* This removes the underline */
+}
+
+

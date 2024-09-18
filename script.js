@@ -7,6 +7,10 @@ imgInput.addEventListener("change", (event) => {
     const file = event.target.files[0]; // get the uploaded file
 
     if (file) {
+        // Clear the old output and show the loading gif
+        output.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/YouTube_loading_symbol_3_%28transparent%29.gif" class="loading">';
+        output.classList.remove("hidden");
+
         const reader = new FileReader(); // create a file reader to read the image
 
         // When the file is loaded, this function is called
@@ -27,28 +31,38 @@ imgInput.addEventListener("change", (event) => {
                 // Draw the image on the canvas
                 ctx.drawImage(img, 0, 0);
 
-                // Convert the image to grayscale
+                // Image Preprocessing: Increase contrast and convert to black & white for better OCR
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const data = imageData.data;
+
                 for (let i = 0; i < data.length; i += 4) {
                     const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                    data[i] = avg;      // Red channel
-                    data[i + 1] = avg;  // Green channel          
-                    data[i + 2] = avg;  // Blue channel
+                    if (avg > 128) {
+                        // Make the pixel white
+                        data[i] = data[i + 1] = data[i + 2] = 255;
+                    } else {
+                        // Make the pixel black
+                        data[i] = data[i + 1] = data[i + 2] = 0;
+                    }
                 }
-                ctx.putImageData(imageData, 0, 0); // put the grayscale data back
+                ctx.putImageData(imageData, 0, 0); // apply the changes back to the canvas
 
                 // Now pass the preprocessed image to Tesseract for OCR
                 Tesseract.recognize(canvas.toDataURL())
                 .then(function(result) {
                     // Clean up the extracted text
                     const cleanedText = cleanOCRResult(result.text);
-                    // Display the cleaned-up text in the output section
-                    output.textContent = cleanedText;
+                    // If no text is detected, show an error message
+                    if (cleanedText === "") {
+                        output.innerHTML = "Error: No data detected in the image.";
+                    } else {
+                        // Display the cleaned-up text in the output section with proper HTML new lines
+                        output.innerHTML = cleanedText.replace(/\n/g, '<br>'); // Display new lines in HTML
+                    }
                 })
                 .catch(function(error) {
                     // Handle any errors that occur during OCR
-                    output.textContent = "Error processing image";
+                    output.innerHTML = "Error processing image";
                     console.error(error);
                 });
             };
@@ -64,7 +78,7 @@ function cleanOCRResult(text) {
     // Split text into lines
     const lines = text.split('\n');
     
-    // Define a regex pattern to match lines with a format like: "#1 koala - 3,887,586,217"
+    // Define a regex pattern
     const factionPattern = /#\d+\s+([a-zA-Z0-9]+)\s+-\s+\$?([0-9,.]+)/;
 
     let cleanedData = '';
@@ -75,8 +89,18 @@ function cleanOCRResult(text) {
         if (match) {
             // Extract the rank, name, and value
             const rank = match[0].split(' ')[0]; // #1, #2, etc.
-            const name = match[1];               // Faction name
-            const value = match[2];              // Faction value
+            const name = match[1];               // faction name
+            let value = match[2];                // faction value
+            
+            // Fix the dollar sign - replace only the first '5' that appears at the beginning of the value
+            if (value.startsWith('5')) {
+                value = '$' + value.slice(1);    // replace the first '5' with '$'
+            }
+
+            // Replace all periods with commas
+            value = value.replace(/\./g, ',');   // replace periods with commas
+
+            // Append the cleaned up line to the final result
             cleanedData += `${rank} ${name} - ${value}\n`;
         }
     });
