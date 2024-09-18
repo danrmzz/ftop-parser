@@ -14,8 +14,18 @@ imgInput.addEventListener("change", (event) => {
             const img = new Image(); // create a new image object
             img.src = e.target.result; // set the source to the uploaded image
 
-            // Display a message in the output area
-            output.textContent = "Image uploaded! Ready for OCR processing...";
+
+            // Use Tesseract.js to perform OCR on the uploaded image
+            Tesseract.recognize(img.src)
+                .then(function(result) {
+                    // Display the extracted text in the output section
+                    output.textContent = result.text;
+                })
+                .catch(function(error) {
+                    // Handle any errors that occur during OCR
+                    output.textContent = "Error processing image";
+                    console.error(error);
+                });
         };
 
         // Read the image file
