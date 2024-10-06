@@ -1,6 +1,6 @@
 # Rankings Parser Tool
 
-This project is designed to help staff members of **SaiCoPvP** easily extract, clean, and transfer F-Top leaderboard data into spreadsheets, Discord, or other platforms at the end of a map.
+This project is designed to help **SaiCoPvP** management easily extract, clean, and transfer F-Top leaderboard data into spreadsheets, Discord, or other platforms at the end of a map.
 
 ## Purpose
 
